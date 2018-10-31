@@ -1,19 +1,19 @@
 // const express = require('express');
 // const _ = require('underscore');
 
-import express from 'express';
+import express, { Request, Response } from 'express';
 import _ from 'underscore';
 
 // let { verificaToken, verificaAdminRole } = require('../middlewares/autenticacion');
 // let Categoria = require('../models/categoria');
 
 import { verificaToken, verificaAdminRole } from '../middlewares/autenticacion';
-import Categoria from '../models/categoria';
+import Categoria, { ICategoriaDocument } from '../models/categoria';
 
 let app = express();
 
 // Mostrar todas las categorías
-app.get('/categoria', verificaToken, (req: any, res: any) => {
+app.get('/categoria', verificaToken, (req: Request, res: Response) => {
   let desde: number = Number(req.query.desde) || 0;
   let limite: number = Number(req.query.limite) || 5;
 
@@ -40,7 +40,7 @@ app.get('/categoria', verificaToken, (req: any, res: any) => {
 });
 
 // Mostrar una categoría por ID
-app.get('/categoria/:id', verificaToken, (req: any, res: any) => {
+app.get('/categoria/:id', verificaToken, (req: Request, res: Response) => {
   let id = req.params.id;
   Categoria.findById(id, {}, (err: any, categoriaDB: any) => {
     if (err) {
@@ -59,14 +59,14 @@ app.get('/categoria/:id', verificaToken, (req: any, res: any) => {
 });
 
 // Crear nueva categoría
-app.post('/categoria', [verificaToken], (req: any, res: any) => {
+app.post('/categoria', [verificaToken], (req: Request, res: Response) => {
   //regresa la nueva categoria
   //req.usuario._id
   let body = req.body;
 
   let categoria = new Categoria({
     descripcion: body.descripcion,
-    usuario: req.usuario._id
+    usuario: (<any>req).usuario._id
   });
 
   categoria.save((err: any, categoriaDB: any) => {

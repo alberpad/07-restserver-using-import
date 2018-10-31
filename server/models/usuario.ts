@@ -52,5 +52,15 @@ usuarioSchema.methods.toJSON = function() {
 
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 
+export interface IUsuarioDocument extends mongoose.Document {
+  nombre: string;
+  email: string;
+  password: string;
+  img: string;
+  role: string;
+  estado: boolean;
+  google: boolean;
+}
+
 //module.exports = mongoose.model('Usuario', usuarioSchema);
 export default mongoose.model('Usuario', usuarioSchema);

@@ -1,17 +1,17 @@
 // const express = require('express');
 // const { verificaToken } = require('../middlewares/autenticacion');
 
-import express from 'express';
+import express, { Request, Response } from 'express';
 import _ from 'underscore';
 import { verificaToken } from '../middlewares/autenticacion';
 let app = express();
 // let Producto = require('../models/producto');
-import Producto from '../models/producto';
+import Producto, { IProductoDocument } from '../models/producto';
 
 //*****************************//
 // Obtener todos los productos //
 //*****************************//
-app.get('/producto', verificaToken, (req: any, res: any) => {
+app.get('/producto', verificaToken, (req: Request, res: Response) => {
   let desde: number = Number(req.query.desde) || 0;
   let limite: number = Number(req.query.limite) || 5;
 
@@ -42,7 +42,7 @@ app.get('/producto', verificaToken, (req: any, res: any) => {
 //*******************************************//
 // Obtener todos los productos dados de baja //
 //*******************************************//
-app.get('/producto/baja', verificaToken, (req: any, res: any) => {
+app.get('/producto/baja', verificaToken, (req: Request, res: Response) => {
   // let desde: number = Number(req.query.desde) || 0;
   // let limite: number = Number(req.query.limite) || 5;
 
@@ -58,7 +58,7 @@ app.get('/producto/baja', verificaToken, (req: any, res: any) => {
           err
         });
       }
-      Producto.count({ disponible: false }, (err: any, conteo: any) => {
+      Producto.count({ disponible: false }, (err: any, conteo: number) => {
         res.json({
           ok: true,
           cuantos: `Hay ${conteo} registro/s`,
@@ -69,7 +69,7 @@ app.get('/producto/baja', verificaToken, (req: any, res: any) => {
 });
 
 // Obtener un producto por id
-app.get('/producto/:id', verificaToken, (req: any, res: any) => {
+app.get('/producto/:id', verificaToken, (req: Request, res: Response) => {
   let id = req.params.id;
   Producto.findById(id)
     .populate('usuario', 'nombre email')
@@ -99,7 +99,7 @@ app.get('/producto/:id', verificaToken, (req: any, res: any) => {
 });
 
 // Buscar productos
-app.get('/producto/buscar/:termino', verificaToken, (req, res) => {
+app.get('/producto/buscar/:termino', verificaToken, (req: Request, res: Response) => {
   let termino = req.params.termino;
   // para una búsqueda más flexible usamos expresiones regulares
   let regex = new RegExp(termino, 'i');
@@ -120,7 +120,7 @@ app.get('/producto/buscar/:termino', verificaToken, (req, res) => {
 });
 
 // Crear un nuevo producto
-app.post('/producto', verificaToken, (req: any, res: any) => {
+app.post('/producto', verificaToken, (req: Request, res: Response) => {
   // grabar el usuario
   // grabar una categoria del listado
   let body = req.body;
@@ -131,7 +131,7 @@ app.post('/producto', verificaToken, (req: any, res: any) => {
     precioUni: body.precioUni,
     categoria: body.categoria,
     disponible: body.disponible,
-    usuario: req.usuario._id
+    usuario: (<any>req).usuario._id
   });
 
   producto.save((err: any, productoDB: any) => {
@@ -156,7 +156,7 @@ app.post('/producto', verificaToken, (req: any, res: any) => {
 });
 
 // Actualizar el producto
-app.put('/producto/:id', verificaToken, (req: any, res: any) => {
+app.put('/producto/:id', verificaToken, (req: Request, res: Response) => {
   let id = req.params.id;
   //la función pick de underscore permite seleccionar unos parámetros de un objeto
   //con la ventaja de que si no existe no se incluyen
@@ -186,7 +186,7 @@ app.put('/producto/:id', verificaToken, (req: any, res: any) => {
   });
 });
 
-app.delete('/producto/:id', verificaToken, (req: any, res: any) => {
+app.delete('/producto/:id', verificaToken, (req: Request, res: Response) => {
   // pasar disponible a false
   // Eliminación mediante bandera en la base de datos
   let id = req.params.id;

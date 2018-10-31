@@ -31,5 +31,10 @@ let categoriaSchema = new Schema({
 
 //categoriaSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 
+export interface ICategoriaDocument extends mongoose.Document {
+  descripcion: string;
+  usuario: mongoose.Schema.Types.ObjectId;
+}
+
 // module.exports = mongoose.model('Categoria', categoriaSchema);
 export default mongoose.model('Categoria', categoriaSchema);

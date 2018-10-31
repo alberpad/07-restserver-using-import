@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'dev') {
 } else {
   urlDB = <string>process.env.MONGO_URI;
 }
-// Creamos una variable de enviorement MIURLDB
+// Creamos una variable de enviroment MIURLDB
 process.env.MIURLDB = urlDB;
 
 // Google client id

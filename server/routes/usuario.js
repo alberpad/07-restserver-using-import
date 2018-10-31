@@ -9,7 +9,7 @@ const underscore_1 = __importDefault(require("underscore"));
 const usuario_1 = __importDefault(require("../models/usuario"));
 const autenticacion_1 = require("../middlewares/autenticacion");
 const app = express_1.default();
-app.get('/usuario', autenticacion_1.verificaToken, function (req, res) {
+app.get('/usuario', autenticacion_1.verificaToken, (req, res) => {
     let desde = Number(req.query.desde) || 0;
     let limite = Number(req.query.limite) || 5;
     usuario_1.default.find({ estado: true }, 'nombre email role estado google img')
@@ -31,7 +31,7 @@ app.get('/usuario', autenticacion_1.verificaToken, function (req, res) {
         });
     });
 });
-app.post('/usuario', [autenticacion_1.verificaToken, autenticacion_1.verificaAdminRole], function (req, res) {
+app.post('/usuario', [autenticacion_1.verificaToken, autenticacion_1.verificaAdminRole], (req, res) => {
     let body = req.body;
     let usuario = new usuario_1.default({
         nombre: body.nombre,

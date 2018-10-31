@@ -17,6 +17,21 @@ exports.verificaToken = (req, res, next) => {
         next();
     });
 };
+exports.verificaTokenImg = (req, res, next) => {
+    let token = req.query.token;
+    jsonwebtoken_1.default.verify(token, process.env.SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err: {
+                    message: 'token no válido'
+                }
+            });
+        }
+        req.usuario = decoded.usuario;
+        next();
+    });
+};
 exports.verificaAdminRole = (req, res, next) => {
     let usuario = req.usuario;
     if (usuario.role === 'ADMIN_ROLE') {
@@ -29,4 +44,5 @@ exports.verificaAdminRole = (req, res, next) => {
         });
     }
 };
+exports.default = { verificaToken: exports.verificaToken, verificaAdminRole: exports.verificaAdminRole, verificaTokenImg: exports.verificaTokenImg };
 //# sourceMappingURL=autenticacion.js.map

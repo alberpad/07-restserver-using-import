@@ -9,9 +9,13 @@ const usuario_1 = __importDefault(require("./usuario"));
 const login_1 = __importDefault(require("./login"));
 const categoria_1 = __importDefault(require("./categoria"));
 const producto_1 = __importDefault(require("./producto"));
+const upload_1 = __importDefault(require("./upload"));
+const imagenes_1 = __importDefault(require("./imagenes"));
 app.use(usuario_1.default);
 app.use(login_1.default);
 app.use(categoria_1.default);
 app.use(producto_1.default);
+app.use(upload_1.default);
+app.use(imagenes_1.default);
 exports.default = app;
 //# sourceMappingURL=index.js.map
